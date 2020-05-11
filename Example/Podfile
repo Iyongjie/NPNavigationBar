@@ -1,6 +1,0 @@
-use_frameworks!
-target 'NPNavigationBar_Tests' do
-  pod 'NPNavigationBar', :path => '../'
-  
-  
-end
