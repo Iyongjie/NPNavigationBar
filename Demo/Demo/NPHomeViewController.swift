@@ -21,5 +21,9 @@ class NPHomeViewController: NPBaseViewController {
         navigationBar!.title = "首页"
         navigationBar?.style = .leftAndMiddle
         navigationBar?.setBackgroundImageName(name: "bridge.jpg")
+        navigationBar?.lineColor = .red
+        navigationBar?.titleColor = .yellow
+        self.navigationBar?.titleFont = UIFont.systemFont(ofSize: 30)
+
     }
 }

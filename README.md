@@ -9,8 +9,12 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
-
+## 说明
+0. 依赖SnapKit，完美适应横竖屏切换  
+1. 导航栏左边的按钮从423开始依次增加
+2. 导航栏右边的按钮从523开始依次增加
+3. 动态添加按钮，动态修改按钮
+4. 自适应item元素大小
 ## Installation
 
 NPNavigationBar is available through [CocoaPods](https://cocoapods.org). To install

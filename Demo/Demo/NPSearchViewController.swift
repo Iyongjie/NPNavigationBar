@@ -25,6 +25,9 @@ class NPSearchViewController: NPBaseViewController, UISearchBarDelegate {
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 200, height: 0))
         searchBar.delegate = self
         self.navigationBar?.addHeaderView(view: searchBar)
+        self.navigationBar?.lineColor = .red
+        self.navigationBar?.hiddenLineView = true
+        
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

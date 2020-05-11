@@ -60,6 +60,8 @@ class ViewController: UIViewController, NPNavigationDataSource, NPNavigationBarD
         navigationBar!.setItem(tag: 524, title: "添加我的", titleColor: .red, backgroundColor: .brown, font: UIFont.systemFont(ofSize: 13), radius: 2, state: .normal)
         navigationBar!.setItem(tag: 423, imageName: "star.jpg", edgInset: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12), state: .normal)
         navigationBar?.setBackgroundColor(backgroundColor: .lightGray)
+        navigationBar?.titleColor = .blue
+        navigationBar?.setBackAlpha(alpha: 0.3, onlyeBack: true)
 //        navigationBar?.dataSource = self
         
         navigationBar?.delegate = self

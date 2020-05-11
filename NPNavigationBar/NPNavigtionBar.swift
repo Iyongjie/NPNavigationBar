@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import SnapKit
  
-func kNPNavigationBarTop() -> CGFloat {
+public func kNPNavigationBarTop() -> CGFloat {
     var statusBarHeight: CGFloat = 0
     if #available(iOS 13.0, *) {
         let statusManager = UIApplication.shared.windows.first?.windowScene?.statusBarManager
@@ -20,7 +20,7 @@ func kNPNavigationBarTop() -> CGFloat {
     }
     return statusBarHeight
 }
-let kNPNavigationBarHeight = (kNPNavigationBarTop() + 44.0)
+public let kNPNavigationBarHeight = (kNPNavigationBarTop() + 44.0)
 let kNPNavigationScreenWidth = UIScreen.main.bounds.size.width
 let kNPNavigationScreenHeight = UIScreen.main.bounds.size.height
 let kNPNavigationContentHeight: CGFloat = 44.0
@@ -37,7 +37,7 @@ let kNPNavigationBTNHeight: CGFloat = 44.0
 }
 
 /// 导航栏排版类型
-enum NPNavigationBarStyle {
+public enum NPNavigationBarStyle {
     case all
     case left
     case leftAndMiddle
@@ -48,20 +48,20 @@ enum NPNavigationBarStyle {
 }
  
 /// 动态添加的位置
-enum NPNavigationBarItemPosition {
+public enum NPNavigationBarItemPosition {
     case left
     case right
 }
 
 /// tag左边从423开始，右边从523开始
-enum NPNavigationBarItemTag: NSInteger {
+public enum NPNavigationBarItemTag: NSInteger {
     case left = 423
     case right = 523
 }
 
 public class NPNavigtionBar: UIView {
     // MARK: 公开属性
-    var title: String? = "导航栏" {
+    var title: String? {
         didSet {
             middleLabel.text = title
             for (_, view) in middleView.subviews.enumerated() {
@@ -70,9 +70,17 @@ public class NPNavigtionBar: UIView {
             addMiddleView()
         }
     }
-    var titleColor: UIColor? = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
-    var titleFont: UIFont? = UIFont(name: "PingFangSC-Semibold", size: 18)
-    var titleAttribute: NSAttributedString?
+    var titleColor: UIColor? = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1) {
+        didSet {
+            middleLabel.textColor = titleColor
+        }
+    }
+    var titleFont: UIFont? = UIFont(name: "PingFangSC-Semibold", size: 18) {
+        didSet {
+            self.middleWidth = self.calculateWidthWithFont(string: middleLabel.text!)
+            middleLabel.font = titleFont
+        }
+    }
     var lineColor: UIColor? = UIColor(red: 218/255.0, green: 218/255.0, blue: 218/255.0, alpha: 1) {
         didSet {
             self.lineView.backgroundColor = lineColor!
@@ -217,15 +225,6 @@ public class NPNavigtionBar: UIView {
         self.setBtn(btn: btn, title: "", titleColor: UIColor(), backgroundColor: UIColor.clear, font: UIFont(), radius: 0, state: state)
     }
     
-    private func setBtn(btn: UIButton, title: String, titleColor: UIColor, backgroundColor: UIColor, font: UIFont, radius: CGFloat, state: UIControl.State) {
-        btn.setTitle(title, for: state)
-        btn.setTitleColor(titleColor, for: state)
-        btn.setBackgroundImage(UIImage(navigationBackgroundColor: backgroundColor, size: btn.frame.size), for: state)
-        btn.layer.cornerRadius = radius
-        btn.layer.masksToBounds = true
-        btn.titleLabel?.font = font
-    }
-    
     func addHeaderView(view: UIView) {
         self.middleLabel.removeFromSuperview()
         self.middleView.addSubview(view)
@@ -269,9 +268,10 @@ public class NPNavigtionBar: UIView {
             contentView.addSubview(middleView)
             contentView.addSubview(rightView)
         }
+        contentView.addSubview(lineView)
     }
     
-    func addLeftViewItems() {
+    private func addLeftViewItems() {
         // 只要width
         if leftView.superview == nil {
             self.contentView.addSubview(self.leftView)
@@ -287,7 +287,7 @@ public class NPNavigtionBar: UIView {
         }
     }
     
-    func addMiddleView() {
+    private func addMiddleView() {
         if middleView.superview == nil {
             self.contentView.addSubview(self.middleView)
         }
@@ -295,7 +295,7 @@ public class NPNavigtionBar: UIView {
         middleView.addSubview(middleLabel)
     }
     
-    func addRightViewItems() {
+    private func addRightViewItems() {
         if rightView.superview == nil {
             self.contentView.addSubview(self.rightView)
         }
@@ -310,7 +310,16 @@ public class NPNavigtionBar: UIView {
         }
     }
     
-    @objc func clickLeftOrRightBtn(btn: UIButton) {
+    private func setBtn(btn: UIButton, title: String, titleColor: UIColor, backgroundColor: UIColor, font: UIFont, radius: CGFloat, state: UIControl.State) {
+        btn.setTitle(title, for: state)
+        btn.setTitleColor(titleColor, for: state)
+        btn.setBackgroundImage(UIImage(navigationBackgroundColor: backgroundColor, size: btn.frame.size), for: state)
+        btn.layer.cornerRadius = radius
+        btn.layer.masksToBounds = true
+        btn.titleLabel?.font = font
+    }
+    
+    @objc private func clickLeftOrRightBtn(btn: UIButton) {
         delegate?.didClickNavigationWithTag(tag: btn.tag)
     }
     
@@ -323,33 +332,33 @@ public class NPNavigtionBar: UIView {
     }
     
     // MARK: 私有属性
-    lazy var backgroundView: UIView = {
+    private lazy var backgroundView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var backgroundImageView: UIImageView = {
+    private lazy var backgroundImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleToFill
         return view
     }()
     
-    lazy var contentView: UIView = {
+    private lazy var contentView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var leftView: UIView = {
+    private lazy var leftView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var middleView: UIView = {
+    private lazy var middleView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var middleLabel: UILabel = {
+    private lazy var middleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = titleFont
@@ -357,19 +366,20 @@ public class NPNavigtionBar: UIView {
         return label
     }()
     
-    lazy var rightView: UIView = {
+    private lazy var rightView: UIView = {
         let view = UIView()
         return view
     }()
     
-    lazy var lineView: UIView = {
+    private lazy var lineView: UIView = {
         let view = UIView()
+        view.backgroundColor = lineColor
         return view
     }()
     
-    var leftWidth: CGFloat = 0
-    var middleWidth: CGFloat = 0
-    var rightWidth: CGFloat = 0
+    private var leftWidth: CGFloat = 0
+    private var middleWidth: CGFloat = 0
+    private var rightWidth: CGFloat = 0
      
     /// 布局
     public override func layoutSubviews() {
@@ -408,7 +418,7 @@ public class NPNavigtionBar: UIView {
             }
             if middleView.superview != nil {
                 let headerView = middleView.subviews[0]
-                let width = headerView.frame.width > 0 ? headerView.frame.width : self.frame.width/3*2.0
+                let width = headerView.frame.width > 0 ? headerView.frame.width : self.middleWidth
                 self.middleWidth = width
                 // 中间
                 let headerWidth = self.middleWidth > 0 ? self.middleWidth : kNPNavigationScreenWidth/3*2.0
@@ -448,7 +458,10 @@ public class NPNavigtionBar: UIView {
                 make.edges.equalTo(0)
             }
         }
-        
+        lineView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(0.5)
+        }
     }
 }
 
