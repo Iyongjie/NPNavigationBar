@@ -1,7 +1,7 @@
  
 Pod::Spec.new do |s|
   s.name             = 'NPNavigationBar'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'Swift导航栏'
   s.description      = <<-DESC
                     一行代码调用，高度自定义导航栏
